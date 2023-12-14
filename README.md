@@ -16,7 +16,8 @@ Make sure you have Java and Maven installed on your system before running this p
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://gitlab.com/marianocamarzana/challengue-recipes.git
+   git clone https://github.com/marianocamarzana/challengue-recipes
+   
    ```
 
 2. **Compile the Project:**
@@ -60,8 +61,11 @@ Make sure you have Java and Maven installed on your system before running this p
        - 2 - The specific recipe is recovered from the database
        - 3 - The recipe is updated and subsequently persisted in the database
 
-2. ### Additional configuration
+3. ### Additional configuration
     - Configuration was added to the project so that the solution can be embedded within the following docker image openjdk:11.0.6-jre (available in docker hub).
+
+3. ### Security
+    - For the challenge, authentication was added to the application through Spring Security using Basic Auth, for commercial applications OAuth2 is used since it provides a more robust level of security compared to Basic Authentication. Instead of sending credentials (username and password) in each request, OAuth2 uses access tokens that have a limited lifespan and do not contain sensitive information. This reduces the risk of credential exposure and improves the overall security of the application.
 
 ## Project Structure
 
