@@ -44,18 +44,18 @@ Make sure you have Java and Maven installed on your system before running this p
    <br>
    
    **Task 2. APIs to Serve Data to a Recipes App:**
-   - `GET /api/challengue/recipe?ids=640266`
+   - `GET /api/challengue/recipe`
      - `ids`: ids is a list of recipe identifiers that will be used to retrieve recipes from the database. 
      -  Retrieves the list of recipes from the H2 Database filtering by the list of ids. If ids are not sent, all recipes are recovered.
  
-   - `PATCH /api/challengue/recipe?ids=640266`
-     - `{ "score": "11" }`
+   - `PATCH /api/challengue/recipe/{id}/score`
+     - `{ "score": "4" }`
      -  Update a specific recipe with the indicated score.
      
      <br>
      
    **Task 3. APIs to Serve Data to a Recipes App:**
-   - `PATCH /api/challengue/recipe?ids=640266`
+   - `PATCH /api/challengue/recipe/{id}/detail`
        - 1 - The recipe detail is retrieved from the API and instead of mapping the model that involves many relationships, it is
      uses the ResponseEntity object, where the response body is of type String. To extract the desired field from the JSON response Jackson library is used.
        - 2 - The specific recipe is recovered from the database
@@ -93,6 +93,10 @@ Different use cases were considered in which exceptions and validations must be 
 
 The project is documented using Swagger. To access its documentation with the possibility of carrying out invocation tests, go to:
 http://localhost:8080/swagger-ui/index.html
+
+## Postman
+
+The Postman collection is available with the developed endpoints codeChallengueRecipes.postman_collection
 
 ## Main Technologies Used
 

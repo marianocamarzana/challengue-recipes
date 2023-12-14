@@ -1,5 +1,9 @@
 package com.challenge.recipes.configuration;
 
+import com.challenge.recipes.model.dto.Recipe;
+import com.challenge.recipes.model.dto.RecipeResponse;
+import com.fasterxml.classmate.TypeResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,18 +23,34 @@ import java.util.Collections;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
+@EnableSwagger2
 public class SwaggerConfiguration {
 
+
+	private TypeResolver typeResolver;
+
+	@Autowired
+	public SwaggerConfiguration(TypeResolver typeResolver) {
+        this.typeResolver = typeResolver;
+    }
+
+    private ApiInfo apiInfo() {
+		return new ApiInfo("Challengue Recipes REST API", "Api developes for code chyallengue using spoonacular API", "API TOS", "MIT License",
+				new Contact("General UserName", "www.baeldung.com", "user-name@gmail.com"),
+				"License of API", "API license URL", Collections.emptyList());
+	}
+
 	@Bean
-		public Docket productApi() {
-			return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
-					.paths(PathSelectors.any()).build().apiInfo(metaInfo());
-		}
-
-		private ApiInfo metaInfo() {
-
-			return new ApiInfo("Challengue Recipes", "API REST", "1.0", "Terms of Service", null, "Apache License Version 2.0",
-					"https://www.apache.org/licesen.html", new ArrayList<>());
-		}
+	public Docket api() {
+		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
+				.additionalModels(
+						typeResolver.resolve(RecipeResponse.class),
+						typeResolver.resolve(Recipe.class)
+				)
+				.select()
+				.apis(RequestHandlerSelectors.basePackage("com.challenge.recipes.controller"))
+				.apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
+				.build();
+	}
 
 }
