@@ -89,6 +89,7 @@ http://localhost:8080/swagger-ui/index.html
 ## Main Technologies Used
 
 - [Spring Boot](https://spring.io/projects/spring-boot): Framework for the development of Java applications based on the principle of convention over configuration.
+- [Lombok](https://projectlombok.org/): Library that speeds up development by eliminating the need to write boilerplate code.
 - [ModelMapper](https://modelmapper.org/): Allows mapping between entities and DTOs automatically.
 - [H2 Database](https://www.h2database.com/): Embedded database written in Java.
 
