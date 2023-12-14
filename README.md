@@ -59,6 +59,10 @@ Make sure you have Java and Maven installed on your system before running this p
      uses the ResponseEntity object, where the response body is of type String. To extract the desired field from the JSON response Jackson library is used.
        - 2 - The specific recipe is recovered from the database
        - 3 - The recipe is updated and subsequently persisted in the database
+
+2. ### Additional configuration
+    - Configuration was added to the project so that the solution can be embedded within the following docker image openjdk:11.0.6-jre (available in docker hub).
+
 ## Project Structure
 
 The project structure follows the conventions of a Spring Boot project:
