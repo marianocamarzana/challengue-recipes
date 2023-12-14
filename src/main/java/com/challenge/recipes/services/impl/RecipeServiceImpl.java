@@ -7,6 +7,7 @@ import com.challenge.recipes.model.dto.RecipeResponse;
 import com.challenge.recipes.services.ExternalApiService;
 import com.challenge.recipes.services.RecipeRepository;
 import com.challenge.recipes.services.RecipeService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,16 +30,28 @@ public class RecipeServiceImpl implements RecipeService {
         this.modelMapper = modelMapper;
     }
 
+
+    private List<Recipe> filterPersistedRecipes(List<Recipe> recipesFromClient) {
+        List<Long> ids = recipesFromClient.stream().map(Recipe::getId)
+                .collect(Collectors.toList());
+        List<Long> persistedRecipes = recipeRepository.getPersistedRecipesIds(ids);
+        return recipesFromClient.stream().filter(recipe -> !persistedRecipes.contains(recipe.getId()))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public RecipeResponse loadRecipesFromClient(String query) {
         RecipeResponse result = externalApiService.fetchData(query);
         if (result != null) {
-            modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-            List<RecipeSummary> entities = result.getResults().stream().map(externalRecipe -> {
-                return modelMapper.map(externalRecipe, RecipeSummary.class);
-            }).toList();
-            entities.forEach(this.recipeRepository::save);
-        } else{
+            List<Recipe> recipes = filterPersistedRecipes(result.getResults());
+            if (!recipes.isEmpty()) {
+                modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+                List<RecipeSummary> entities = recipes.stream().map(externalRecipe -> {
+                    return modelMapper.map(externalRecipe, RecipeSummary.class);
+                }).collect(Collectors.toList());
+                entities.forEach(recipeRepository::save);
+            }
+        } else {
             throw new RecipeNotFoundException();
         }
         return result;
@@ -47,14 +60,20 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public List<Recipe> getRecipesSummaryByIds(List<Long> ids) {
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        List<Recipe> result = null;
         if (!ids.isEmpty()) {
-            return recipeRepository.findAllById(ids)
+            result = recipeRepository.findAllById(ids)
                     .stream().map(entity -> modelMapper.map(entity, Recipe.class))
                     .collect(Collectors.toList());
         } else {
-            return recipeRepository.findAll()
+            result = recipeRepository.findAll()
                     .stream().map(entity -> modelMapper.map(entity, Recipe.class))
                     .collect(Collectors.toList());
+        }
+        if (!result.isEmpty()) {
+            return result;
+        } else {
+            throw new RecipeNotFoundException();
         }
     }
 
@@ -64,6 +83,22 @@ public class RecipeServiceImpl implements RecipeService {
                 .orElseThrow(() -> new RecipeNotFoundException(id));
         recipe.setScore(newScore);
         recipeRepository.save(recipe);
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        return modelMapper.map(recipe, Recipe.class);
+    }
+
+    @Override
+    public Recipe updateDetailRecipe(Long id) {
+        String sourceUrl = null;
+        try {
+            sourceUrl = externalApiService.getSourceUrl(id);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        RecipeSummary recipe = recipeRepository.findById(id)
+                .orElseThrow(() -> new RecipeNotFoundException(id));
+            recipe.setSourceUrlBlob(sourceUrl.getBytes());
+            recipeRepository.save(recipe);
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         return modelMapper.map(recipe, Recipe.class);
     }

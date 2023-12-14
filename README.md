@@ -3,7 +3,7 @@
 ## Project description
 
 The project is developed in Spring Boot 2.7.17.RELEASE on Java 17. It exposes two Full REST services that allow queries on an H2 database, 
-which is loaded with data obtained from spoonacular API
+which is loaded with data obtained from spoonacular API.
 
 ## Previous requirements
 
@@ -33,13 +33,32 @@ Make sure you have Java and Maven installed on your system before running this p
 
    The application will be available in `http://localhost:8080`.
 
-2. **Available Endpoints:**
+2. ### Available Endpoints
+    **Task 1. API for Data Sourcing:**
    - `POST /api/challengue/recipe`
-     - `{ "query": "burger"}`: In this endpoint, the first thing that is done is to retrieve the recipes according to the QUERY filter through the spponacular API. Subsequently, they are persisted in the H2 database as long as they have not been previously persisted.  
+     - `{ "query": "burger"}`: 
+     - Steps
+       - 1 - Retrieve the recipes according to the QUERY filter through the spoonacular API
+       - 2 - Recipes are persisted in the H2 database as long as they have not been previously persisted.  
+   <br>
+   
+   **Task 2. APIs to Serve Data to a Recipes App:**
    - `GET /api/challengue/recipe?ids=640266`
-     - `ids`: ids is a list of the recipe identifiers that will be used to retrieve from the database. In this endpoint, the first thing that is done is to retrieve the recipes according to the QUERY filter through the spponacular API. Subsequently, they are persisted in the H2 database as long as they have not been previously persisted.  
+     - `ids`: ids is a list of recipe identifiers that will be used to retrieve recipes from the database. 
+     -  Retrieves the list of recipes from the H2 Database filtering by the list of ids. If ids are not sent, all recipes are recovered.
+ 
    - `PATCH /api/challengue/recipe?ids=640266`
-     - `{ "score": "11" }`: Update a specific recipe with the indicated score.
+     - `{ "score": "11" }`
+     -  Update a specific recipe with the indicated score.
+     
+     <br>
+     
+   **Task 3. APIs to Serve Data to a Recipes App:**
+   - `PATCH /api/challengue/recipe?ids=640266`
+       - 1 - The recipe detail is retrieved from the API and instead of mapping the model that involves many relationships, it is
+     uses the ResponseEntity object, where the response body is of type String. To extract the desired field from the JSON response Jackson library is used.
+       - 2 - The specific recipe is recovered from the database
+       - 3 - The recipe is updated and subsequently persisted in the database
 ## Project Structure
 
 The project structure follows the conventions of a Spring Boot project:
@@ -54,6 +73,13 @@ The project structure follows the conventions of a Spring Boot project:
     - `service`: Interface where the methods that will carry out the business logic are declared.
     - `service.impl`: Implementation of the methods that will carry out the business logic.
 
+## Uso de Lombok
+
+This project uses Lombok to reduce code verbosity. Make sure you have the Lombok plugin installed in your IDE for proper functioning.
+
+## Exception handling and validations.
+
+Different use cases were considered in which exceptions and validations must be treated correctly.
 
 ## Swagger
 

@@ -17,4 +17,5 @@ public class Recipe {
     private Integer servings;
     private String title;
     private Integer score;
+    private byte[] sourceUrlBlob;
 }

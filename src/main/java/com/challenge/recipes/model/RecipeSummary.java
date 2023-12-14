@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Builder
 @Data
@@ -32,4 +29,6 @@ public class RecipeSummary {
     private String title;
     @Column
     private Integer score;
+    @Lob
+    private byte[] sourceUrlBlob;
 }

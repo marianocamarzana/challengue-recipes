@@ -34,18 +34,20 @@ public class RecipeController {
     @GetMapping(value = "/recipe")
     @ResponseBody
     public ResponseEntity<Object> getRecipeSummary(@RequestParam(value = "ids") List<Long> ids) {
-        try {
-            return new ResponseEntity<>(this.recipeService.getRecipesSummaryByIds(ids), HttpStatus.OK);
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(this.recipeService.getRecipesSummaryByIds(ids), HttpStatus.OK);
     }
 
-    @PatchMapping(value = "/recipe/{id}")
+    @PatchMapping(value = "/recipe/{id}/score")
     @ResponseBody
-    public ResponseEntity<Object> getRecipeSummary(@PathVariable("id") Long id, @Valid @RequestBody UpdateScoreRequest req) {
+    public ResponseEntity<Object> updateScoreRecipe(@PathVariable("id") Long id, @Valid @RequestBody UpdateScoreRequest req) {
         return new ResponseEntity<>(this.recipeService.updateScoreRecipe(id, req.getScore()), HttpStatus.OK);
+    }
+
+    @PatchMapping(value = "/recipe/{id}/detail")
+    @ResponseBody
+    public ResponseEntity<Object> updateDetail(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(this.recipeService.updateDetailRecipe(id), HttpStatus.OK);
+
     }
 
 }
