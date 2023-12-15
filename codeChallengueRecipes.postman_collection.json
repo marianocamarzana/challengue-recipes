@@ -128,7 +128,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/challengue/recipe/642540/detail",
+					"raw": "http://localhost:8080/api/challengue/recipe/642540/score",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -139,14 +139,14 @@
 						"challengue",
 						"recipe",
 						"642540",
-						"detail"
+						"score"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Update sourceUrl recipes",
+			"name": "Update sourceUrl recipe",
 			"request": {
 				"auth": {
 					"type": "basic",
@@ -163,7 +163,7 @@
 						}
 					]
 				},
-				"method": "GET",
+				"method": "PATCH",
 				"header": [],
 				"url": {
 					"raw": "http://localhost:8080/api/challengue/recipe/642540/detail",

@@ -63,6 +63,16 @@ Make sure you have Java and Maven installed on your system before running this p
 
 3. ### Additional configuration
     - Configuration was added to the project so that the solution can be embedded within the following docker image openjdk:11.0.6-jre.
+      - Run the following command to build the Docker image:
+         ```bash
+         mvn spring-boot:run
+        ```
+      - Run the Docker container:
+        - Once the Docker image is successfully built, you can run the container with the following command:
+         ```bash
+         docker run -p 8080:8080 image-name
+        ```        
+        This will map port 8080 of the container to port 8080 of your local machine, allowing you to access your Spring application through http://localhost:8080.  
 
 3. ### Security
     - For the challenge, authentication was added to the application through Spring Security using Basic Auth, for commercial applications OAuth2 is used since it provides a more robust level of security compared to Basic Authentication. Instead of sending credentials (username and password) in each request, OAuth2 uses access tokens that have a limited lifespan and do not contain sensitive information. This reduces the risk of credential exposure and improves the overall security of the application.
