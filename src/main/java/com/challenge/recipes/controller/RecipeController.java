@@ -38,7 +38,7 @@ public class RecipeController {
             content = @Content(schema = @Schema(implementation = RecipeResponse.class)))
     })
     @ResponseBody
-    public ResponseEntity<Object> loadRecipes(@RequestBody RecipeRequest recipeRequest) {
+    public ResponseEntity<Object> loadRecipes(@Valid @RequestBody RecipeRequest recipeRequest) {
         return new ResponseEntity<>(recipeService.loadRecipesFromClient(recipeRequest.getQuery()), HttpStatus.CREATED);
     }
 

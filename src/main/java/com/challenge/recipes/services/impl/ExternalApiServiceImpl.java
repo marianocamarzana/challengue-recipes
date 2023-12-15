@@ -1,11 +1,14 @@
 package com.challenge.recipes.services.impl;
 
+import com.challenge.recipes.exception.RestTemplateResponseErrorHandler;
 import com.challenge.recipes.model.dto.RecipeResponse;
 import com.challenge.recipes.services.ExternalApiService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,8 +24,11 @@ public class ExternalApiServiceImpl implements ExternalApiService {
 
     private final RestTemplate restTemplate;
 
-    public ExternalApiServiceImpl(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    @Autowired
+    public ExternalApiServiceImpl(RestTemplateBuilder restTemplateBuilder) {
+        restTemplate = restTemplateBuilder
+                .errorHandler(new RestTemplateResponseErrorHandler())
+                .build();
     }
 
     @Override
