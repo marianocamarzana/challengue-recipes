@@ -63,7 +63,7 @@ public class RecipeController {
     }
 
     @PatchMapping(value = "/recipe/{id}/detail")
-    @Operation(summary = "Update a specific recipe with the sourceUrl obtained from spñoonacular API from detail recipe")
+    @Operation(summary = "Update a specific recipe with the sourceUrl obtained from spoonacular API from detail recipe")
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Success",
             content = @Content(schema = @Schema(implementation = Recipe.class))),
     })

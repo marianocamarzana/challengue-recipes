@@ -9,4 +9,6 @@ public interface ExternalApiService {
 
 	String getSourceUrl(Long id) throws JsonProcessingException;
 
+	String getDetailRecipeFromSourceUrl(String sourceUrl) throws JsonProcessingException;
+
 }

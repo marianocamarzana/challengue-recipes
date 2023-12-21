@@ -90,14 +90,16 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe updateDetailRecipe(Long id) {
         String sourceUrl = null;
+        String recipeDetail = null;
         try {
             sourceUrl = externalApiService.getSourceUrl(id);
+            recipeDetail = externalApiService.getDetailRecipeFromSourceUrl(sourceUrl);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
         RecipeSummary recipe = recipeRepository.findById(id)
                 .orElseThrow(() -> new RecipeNotFoundException(id));
-            recipe.setSourceUrlBlob(sourceUrl.getBytes());
+            recipe.setSourceUrlBlob(recipeDetail.getBytes());
             recipeRepository.save(recipe);
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         return modelMapper.map(recipe, Recipe.class);
