@@ -37,7 +37,6 @@ public class RecipeController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Success",
             content = @Content(schema = @Schema(implementation = RecipeResponse.class)))
     })
-    @ResponseBody
     public ResponseEntity<Object> loadRecipes(@Valid @RequestBody RecipeRequest recipeRequest) {
         return new ResponseEntity<>(recipeService.loadRecipesFromClient(recipeRequest.getQuery()), HttpStatus.CREATED);
     }
@@ -47,7 +46,6 @@ public class RecipeController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Success",
             content = @Content(schema = @Schema(implementation = Recipe.class))),
     })
-    @ResponseBody
     public ResponseEntity<Object> getRecipeSummary(@RequestParam(value = "ids") List<Long> ids) {
         return new ResponseEntity<>(this.recipeService.getRecipesSummaryByIds(ids), HttpStatus.OK);
     }
@@ -57,7 +55,6 @@ public class RecipeController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Success",
             content = @Content(schema = @Schema(implementation = Recipe.class))),
     })
-    @ResponseBody
     public ResponseEntity<Object> updateScoreRecipe(@PathVariable("id") Long id, @Valid @RequestBody UpdateScoreRequest req) {
         return new ResponseEntity<>(this.recipeService.updateScoreRecipe(id, req.getScore()), HttpStatus.OK);
     }
@@ -67,7 +64,6 @@ public class RecipeController {
     @ApiResponses(value = {@ApiResponse(responseCode = "200", description = "Success",
             content = @Content(schema = @Schema(implementation = Recipe.class))),
     })
-    @ResponseBody
     public ResponseEntity<Object> updateDetail(@PathVariable("id") Long id) {
         return new ResponseEntity<>(this.recipeService.updateDetailRecipe(id), HttpStatus.OK);
 
