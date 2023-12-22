@@ -91,7 +91,7 @@ The project structure follows the conventions of a Spring Boot project:
     - `service`: Interface where the methods that will carry out the business logic are declared.
     - `service.impl`: Implementation of the methods that will carry out the business logic.
 
-## Uso de Lombok
+## Use of Lombok
 
 This project uses Lombok to reduce code verbosity. Make sure you have the Lombok plugin installed in your IDE for proper functioning.
 
